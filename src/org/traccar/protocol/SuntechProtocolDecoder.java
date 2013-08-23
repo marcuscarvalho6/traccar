@@ -74,6 +74,24 @@ public class SuntechProtocolDecoder extends BaseProtocolDecoder {
             return null;
         }
         
+        try {
+            String comandobd = getDataManager().getComandoByImei(imei).getCommand();
+            String prot = sentence.substring(0, 5);
+            if ((channel != null) && (comandobd != null)) {
+                if ("BLOQUEAR".equals(comandobd)) {
+                    channel.write(prot+"CMD;" + imei + ";02;Enable1");
+                    Log.warning("Enviado comando: " + comandobd + " - Device: " + imei);
+                    getDataManager().deleteComando(imei, comandobd);
+                } else if ("DESBLOQUEAR".equals(comandobd)) {
+                    channel.write(prot+"CMD;" + imei + ";02;Disable1");
+                    Log.warning("Enviado comando: " + comandobd + " - Device: " + imei);
+                    getDataManager().deleteComando(imei, comandobd);
+                }
+            }
+        } catch (Exception error) {
+            //return null;
+        }
+        
         // Version
         extendedInfo.set("version", parser.group(index++));
 

@@ -378,6 +378,7 @@ public class ServerManager {
                     pipeline.addLast("frameDecoder",
                             new DelimiterBasedFrameDecoder(1024, ChannelBuffers.wrappedBuffer(delimiter)));
                     pipeline.addLast("stringDecoder", new StringDecoder());
+                    pipeline.addLast("stringEncoder", new StringEncoder());
                     pipeline.addLast("objectDecoder", new SuntechProtocolDecoder(ServerManager.this));
                 }
             });

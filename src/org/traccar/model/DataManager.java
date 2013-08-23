@@ -34,4 +34,12 @@ public interface DataManager {
     public Long addPosition(Position position) throws Exception;
     public void updateLatestPosition(Long deviceId, Long positionId) throws Exception;
 
+    /*
+     * Comandos
+     */
+    public List<Comando> getComandos() throws Exception;
+    
+    public Comando getComandoByImei(String imei) throws Exception;
+    
+    public void deleteComando(String imei, String command) throws Exception;
 }
