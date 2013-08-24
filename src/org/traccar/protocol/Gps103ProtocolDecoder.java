@@ -98,7 +98,24 @@ public class Gps103ProtocolDecoder extends BaseProtocolDecoder {
             Log.warning("Unknown device - " + imei);
             return null;
         }
-
+        
+        try {
+            String comandobd = getDataManager().getComandoByImei(imei).getCommand();
+            if ((channel != null) && (comandobd != null)) {
+                if ("BLOQUEAR".equals(comandobd)) {
+                    channel.write("**," + imei + ",J;");
+                    Log.warning("Enviado comando: " + comandobd + " - Device: " + imei);
+                    getDataManager().deleteComando(imei, comandobd);
+                } else if ("DESBLOQUEAR".equals(comandobd)) {
+                    channel.write("**," + imei + ",K;");
+                    Log.warning("Enviado comando: " + comandobd + " - Device: " + imei);
+                    getDataManager().deleteComando(imei, comandobd);
+                }
+            }
+        } catch (Exception error) {
+            //return null;
+        }
+        
         // Alarm message
         extendedInfo.set("alarm", parser.group(index++));
         
